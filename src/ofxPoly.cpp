@@ -19,7 +19,7 @@ void ofxPolyGrow(ofPolyline & poly, const ofPolyline & polySource, float amount)
         return;
     }
     
-    const vector<ofVec3f> & points = polySource.getVertices();
+    const vector<glm::vec3> & points = polySource.getVertices();
     int numOfPoints = points.size();
 
     bool bClosed = true;
@@ -76,7 +76,7 @@ void ofxPolyGrowAlongNormals(ofPolyline & poly, const ofPolyline & polySource, c
         return;
     }
     
-    vector<ofVec3f> & points = poly.getVertices();
+    vector<glm::vec3> & points = poly.getVertices();
     int numOfPoints = points.size();
     
     for(int i=0; i<numOfPoints; i++) {
@@ -86,7 +86,7 @@ void ofxPolyGrowAlongNormals(ofPolyline & poly, const ofPolyline & polySource, c
             normalLength = normalLengths[i];
         }
         
-        ofVec3f & point = points[i];
+        glm::vec3& point = points[i];
         ofVec3f normal = poly.getNormalAtIndex(i);
         point += (normal * normalLength);
     }
@@ -150,7 +150,7 @@ void ofxPolyToMesh(ofMesh & mesh, const ofPolyline & poly0, const ofPolyline & p
 //--------------------------------------------------------------
 void ofxPolyDrawNormals(const ofPolyline & poly, float normalLength) {
 
-    const vector<ofVec3f> & points = poly.getVertices();
+    const vector<glm::vec3> & points = poly.getVertices();
     
     for(int i=0; i<points.size(); i++) {
         const ofVec3f & point = points[i];
@@ -162,44 +162,11 @@ void ofxPolyDrawNormals(const ofPolyline & poly, float normalLength) {
 
 //--------------------------------------------------------------
 void ofxPolySave(const ofPolyline & poly, string xmlPath) {
-    ofXml xml;
-    xml.addChild("poly");
-    xml.setAttribute("closed", ofToString(poly.isClosed()));
-    for(int i=0; i<poly.size(); i++) {
-        const ofPoint & point = poly.getVertices()[i];
-        
-        xml.addChild("point");
-        xml.setToChild(i);
-        xml.setAttribute("x", ofToString(point.x));
-        xml.setAttribute("y", ofToString(point.y));
-        xml.setToParent();
-    }
-    
-    xml.save(xmlPath);
+   
 }
 
 //--------------------------------------------------------------
 void ofxPolyLoad(ofPolyline & poly, string xmlPath) {
-    ofXml xml;
-    bool bLoaded = xml.load(xmlPath);
-    if(bLoaded == false) {
-        return;
-    }
-    
-    xml.setTo("poly");
-    bool bClosed = ofToInt(xml.getAttribute("closed"));
-    
-    poly.clear();
-    
-    int numOfPoints = xml.getNumChildren();
-    for(int i=0; i<numOfPoints; i++) {
-        xml.setToChild(i);
-        float x = ofToFloat(xml.getAttribute("x"));
-        float y = ofToFloat(xml.getAttribute("y"));
-        
-        poly.addVertex(x, y);
-    }
-    
-    poly.setClosed(bClosed);
+  
 }
 
