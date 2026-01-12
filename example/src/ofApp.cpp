@@ -22,9 +22,9 @@ void ofApp::draw(){
 
     poly.draw();
     
-    const vector<ofVec3f> & points = poly.getVertices();
+    const vector<glm::vec3> & points = poly.getVertices();
     for(int i=0; i<points.size(); i++) {
-        const ofVec3f & point = points[i];
+        const glm::vec3 & point = points[i];
         ofDrawCircle(point.x, point.y, 4);
     }
     
@@ -51,7 +51,12 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	if (key == 's' || key == 'S') {
+		ofxPolySave(poly, "poly.xml");
+	}
+	if (key == 'l' || key == 'L') {
+		ofxPolyLoad(poly, "poly.xml");
+	}
 }
 
 //--------------------------------------------------------------
